@@ -1,0 +1,134 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<style>
+/* ===============================
+   NEW CHAT (SCOPED)
+=============================== */
+
+._newchat-wrapper {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 90px;
+}
+
+/* ===============================
+   GLASS CARD
+=============================== */
+
+._newchat-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 32px;
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    color: #ffffff;
+}
+
+/* ===============================
+   HEADING
+=============================== */
+
+._newchat-heading {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+/* ===============================
+   FORM
+=============================== */
+
+._newchat-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ===============================
+   INPUT
+=============================== */
+
+._newchat-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    outline: none;
+    font-size: 15px;
+}
+
+._newchat-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+._newchat-input:focus {
+    border-color: #9d61cf;
+}
+
+/* ===============================
+   BUTTON
+=============================== */
+
+._newchat-btn {
+    padding: 12px;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #9d61cf, #5f2c82);
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+._newchat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(157, 97, 207, 0.6);
+}
+</style>
+
+<div class="_newchat-wrapper">
+    <div class="_newchat-card">
+
+        <div class="_newchat-heading">
+            ➕ Create New Chat
+        </div>
+
+        <form method="post" class="_newchat-form">
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="title"
+                class="_newchat-input"
+                placeholder="Enter chat name"
+                required
+            >
+
+            <button type="submit" class="_newchat-btn">
+                Create Chat
+            </button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

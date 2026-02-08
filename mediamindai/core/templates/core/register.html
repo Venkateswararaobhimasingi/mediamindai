@@ -1,0 +1,175 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<style>
+/* ===============================
+   REGISTER PAGE (SCOPED)
+=============================== */
+
+._register-wrapper {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 40px;
+}
+
+/* ===============================
+   GLASS CARD
+=============================== */
+
+._register-card {
+    width: 100%;
+    max-width: 520px;
+    padding: 34px;
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    color: #ffffff;
+}
+
+/* ===============================
+   HEADING
+=============================== */
+
+._register-heading {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+/* ===============================
+   FORM
+=============================== */
+
+._register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ===============================
+   INPUT
+=============================== */
+
+._register-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    outline: none;
+    font-size: 15px;
+}
+
+._register-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+._register-input:focus {
+    border-color: #9d61cf;
+}
+
+/* ===============================
+   BUTTON
+=============================== */
+
+._register-btn {
+    padding: 12px;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #9d61cf, #5f2c82);
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+._register-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(157, 97, 207, 0.6);
+}
+
+/* ===============================
+   FOOTER LINK
+=============================== */
+
+._register-footer {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+._register-footer a {
+    color: #cfa9ff;
+    text-decoration: none;
+}
+
+._register-footer a:hover {
+    text-decoration: underline;
+}
+</style>
+
+<div class="_register-wrapper">
+    <div class="_register-card">
+
+        <div class="_register-heading">
+            📝 Create Account
+        </div>
+
+        <form method="post" class="_register-form">
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="username"
+                class="_register-input"
+                placeholder="Username"
+                required
+            >
+
+            <input
+                type="email"
+                name="email"
+                class="_register-input"
+                placeholder="Email"
+                required
+            >
+
+            <input
+                type="password"
+                name="password"
+                class="_register-input"
+                placeholder="Password"
+                required
+            >
+
+            <button type="submit" class="_register-btn">
+                Register
+            </button>
+        </form>
+
+        <div class="_register-footer">
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

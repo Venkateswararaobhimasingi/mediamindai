@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MediaMind AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Exo:400,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===============================
+           RESET
+        =============================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo', sans-serif;
+            background: #0b0f1a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ===============================
+           BASE ROOT
+        =============================== */
+        ._base-root {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ===============================
+           ANIMATED BACKGROUND (MEDIA MIND AI)
+        =============================== */
+        .area {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(
+                circle at top,
+                #1a1f3c,
+                #0b0f1a 60%
+            );
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .circles {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(130, 160, 255, 0.18);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
+
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-duration: 22s;
+        }
+
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-duration: 12s;
+            animation-delay: 2s;
+        }
+
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-duration: 18s;
+        }
+
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+        }
+
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-duration: 35s;
+        }
+
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-duration: 20s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-1200px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ===============================
+           NAVBAR (GLASS DARK)
+        =============================== */
+        ._base-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+
+            display: flex;
+            gap: 22px;
+            padding: 14px 26px;
+
+            background: rgba(10, 14, 30, 0.55);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+             border-bottom: 1px solid rgba(249, 248, 248, 0.85);
+
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+        }
+
+        ._base-navbar-link {
+            color: #e8ebff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        ._base-navbar-link:hover {
+            color: #9aa7ff;
+        }
+
+        /* ===============================
+           PAGE CONTENT
+        =============================== */
+        ._base-container {
+            position: relative;
+            padding: 90px 24px 24px;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="_base-root">
+
+    <!-- Animated Background -->
+    <div class="area">
+        <ul class="circles">
+            <li></li><li></li><li></li><li></li><li></li>
+            <li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="_base-navbar">
+        <a class="_base-navbar-link" href="{% url 'home' %}">MediaMindAI</a>
+
+        {% if user.is_authenticated %}
+            <a class="_base-navbar-link" href="{% url 'home' %}">History</a>
+            <a class="_base-navbar-link" href="{% url 'new_chat' %}">New Chat</a>
+            <a class="_base-navbar-link" href="{% url 'logout' %}">Logout</a>
+        {% endif %}
+    </nav>
+
+    <!-- Page Content -->
+    <main class="_base-container">
+        {% block content %}{% endblock %}
+    </main>
+
+</div>
+
+</body>
+</html>

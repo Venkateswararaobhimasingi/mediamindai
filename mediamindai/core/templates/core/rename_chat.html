@@ -1,0 +1,134 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<style>
+/* ===============================
+   RENAME CHAT (SCOPED)
+=============================== */
+
+._rename-wrapper {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 40px;
+}
+
+/* ===============================
+   GLASS CARD
+=============================== */
+
+._rename-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 32px;
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    color: #ffffff;
+}
+
+/* ===============================
+   HEADING
+=============================== */
+
+._rename-heading {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+/* ===============================
+   FORM
+=============================== */
+
+._rename-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ===============================
+   INPUT
+=============================== */
+
+._rename-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    outline: none;
+    font-size: 15px;
+}
+
+._rename-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+._rename-input:focus {
+    border-color: #9d61cf;
+}
+
+/* ===============================
+   BUTTON
+=============================== */
+
+._rename-btn {
+    padding: 12px;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #9d61cf, #5f2c82);
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+._rename-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(157, 97, 207, 0.6);
+}
+</style>
+
+<div class="_rename-wrapper">
+    <div class="_rename-card">
+
+        <div class="_rename-heading">
+            ✏️ Rename Chat
+        </div>
+
+        <form method="post" class="_rename-form">
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="title"
+                value="{{ chat.title }}"
+                class="_rename-input"
+                required
+            >
+
+            <button type="submit" class="_rename-btn">
+                Update Name
+            </button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

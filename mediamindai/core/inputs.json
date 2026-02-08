@@ -1,0 +1,92 @@
+{
+  "SYSTEM_START": {
+    "message": "✨ What do you want to create?",
+    "options": [
+      "linkedin",
+      "email",
+      "marketing",
+      "instagram",
+      "resume",
+      "review",
+      "image"
+    ]
+  },
+
+  "USE_CASES": {
+    "linkedin": {
+      "label": "LinkedIn Post",
+      "questions": [
+        { "key": "topic", "question": "What is the post topic?", "options": null },
+        { "key": "purpose", "question": "Purpose?", "options": ["Hiring", "Achievement", "Update"] },
+        { "key": "audience", "question": "Target audience?", "options": ["All", "Developers", "Founders", "Recruiters"] },
+        { "key": "tone", "question": "Tone?", "options": ["Professional", "Friendly", "Inspirational"] }
+      ],
+      "role": "professional LinkedIn content writer"
+    },
+
+    "email": {
+      "label": "Professional Email",
+      "questions": [
+        { "key": "email_type", "question": "Email type?", "options": ["Job", "Follow-up", "Cold"] },
+        { "key": "recipient_role", "question": "Recipient role?", "options": null },
+        { "key": "main_message", "question": "Main message (short)?", "options": null },
+        { "key": "tone", "question": "Tone?", "options": ["Formal", "Polite", "Friendly"] }
+      ],
+      "role": "professional business email writer"
+    },
+
+    "marketing": {
+      "label": "Marketing Ad Caption",
+      "questions": [
+        { "key": "platform", "question": "Platform?", "options": ["Instagram", "Facebook", "Google"] },
+        { "key": "product", "question": "Product or Service?", "options": null },
+        { "key": "target_audience", "question": "Target audience?", "options": null },
+        { "key": "cta", "question": "Call To Action?", "options": ["Buy Now", "Sign Up", "Learn More"] }
+      ],
+      "role": "digital marketing copywriter"
+    },
+
+    "instagram": {
+      "label": "Instagram Post",
+      "questions": [
+        { "key": "topic", "question": "Post topic?", "options": null },
+        { "key": "goal", "question": "Post goal?", "options": ["Engagement", "Promotion"] },
+        { "key": "tone", "question": "Tone?", "options": ["Fun", "Bold", "Informative"] },
+        { "key": "trend", "question": "Trend-based?", "options": ["Yes", "No"] }
+      ],
+      "role": "social media content creator"
+    },
+
+    "resume": {
+      "label": "Resume Summary",
+      "questions": [
+        { "key": "role", "question": "Target role?", "options": null },
+        { "key": "experience", "question": "Experience level?", "options": ["Fresher", "1–3 Years", "3–5 Years", "5+ Years"] },
+        { "key": "skills", "question": "Key skills (comma-separated)?", "options": null },
+        { "key": "goal", "question": "Career goal?", "options": null }
+      ],
+      "role": "professional resume summary writer"
+    },
+
+    "review": {
+      "label": "Product Review",
+      "questions": [
+        { "key": "product", "question": "Product name?", "options": null },
+        { "key": "experience", "question": "Experience?", "options": ["Positive", "Neutral", "Negative"] },
+        { "key": "platform", "question": "Review platform?", "options": ["Amazon", "Flipkart", "Google"] },
+        { "key": "points", "question": "Key points to mention?", "options": null }
+      ],
+      "role": "genuine customer writing a real review"
+    },
+
+    "image": {
+      "label": "AI Image",
+      "questions": [
+        { "key": "prompt", "question": "Describe the image you want", "options": null },
+        { "key": "style", "question": "Choose style", "options": ["Realistic", "Anime", "3D", "Cinematic"] },
+        { "key": "theme", "question": "Theme", "options": ["Indian", "Futuristic", "Nature", "Cyberpunk"] }
+      ],
+      "role": "AI image generator"
+    }
+  }
+}

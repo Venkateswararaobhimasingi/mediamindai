@@ -1,0 +1,276 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<style>
+._chat-page {
+    height: calc(100vh - 80px);
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    overflow: hidden;
+}
+
+._chat-card {
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    border-radius: 16px;
+    overflow: hidden;
+    color: #fff;
+}
+
+._chat-header {
+    font-size: 20px;
+    font-weight: 600;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+._chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+._chat-row { display: flex; }
+._chat-row-user { justify-content: flex-end; }
+._chat-row-ai { justify-content: flex-start; }
+
+._chat-bubble {
+    max-width: 75%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+._chat-bubble-user {
+    background: linear-gradient(135deg, #9d61cf, #5f2c82);
+}
+
+._chat-bubble-ai {
+    background: rgba(255,255,255,0.18);
+}
+
+._chat-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+._chat-option-btn {
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    background: linear-gradient(135deg, #5f2c82, #9d61cf);
+    color: white;
+}
+
+._chat-input-bar {
+    display: flex;
+    gap: 10px;
+    padding: 14px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    align-items: center;
+}
+
+._chat-plus {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.15);
+    color: white;
+}
+
+._chat-input {
+    flex: 1;
+    padding: 14px 16px;
+    border-radius: 24px;
+    border: none;
+}
+
+._chat-send {
+    padding: 14px 22px;
+    border-radius: 24px;
+    border: none;
+    background: linear-gradient(135deg, #9d61cf, #5f2c82);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+._loader {
+    font-style: italic;
+    opacity: 0.8;
+}
+</style>
+
+<div class="_chat-page">
+<div class="_chat-card">
+
+<div class="_chat-header">💬 {{ chat.title }}</div>
+
+<div class="_chat-messages" id="chatMessages">
+{% if not chat.messages %}
+    <div class="_chat-row _chat-row-ai">
+        <div class="_chat-bubble _chat-bubble-ai">
+            👋 Welcome! Click start to begin.
+            <div class="_chat-options">
+                <button class="_chat-option-btn" onclick="sendAction('start')">
+                    🚀 Start Chat
+                </button>
+            </div>
+        </div>
+    </div>
+{% else %}
+    {% for msg in chat.messages %}
+    <div class="_chat-row {% if msg.sender == 'user' %}_chat-row-user{% else %}_chat-row-ai{% endif %}">
+        <div class="_chat-bubble {% if msg.sender == 'user' %}_chat-bubble-user{% else %}_chat-bubble-ai{% endif %}">
+            {{ msg.content|safe }}
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+</div>
+
+<form class="_chat-input-bar" id="chatForm">
+    {% csrf_token %}
+
+    <!-- PLUS BUTTON -->
+    <button type="button" class="_chat-plus" id="plusBtn">+</button>
+
+    <input class="_chat-input" id="chatInput" placeholder="Type your answer…" />
+    <button class="_chat-send" type="submit">Send</button>
+</form>
+
+</div>
+</div>
+
+<script>
+const chatBox = document.getElementById("chatMessages");
+const form = document.getElementById("chatForm");
+const input = document.getElementById("chatInput");
+const plusBtn = document.getElementById("plusBtn");
+
+let isSending = false;
+
+function scrollBottom() {
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function clearOptions() {
+    document.querySelectorAll("._chat-options").forEach(o => o.remove());
+}
+
+function showLoader() {
+    clearOptions();
+    chatBox.innerHTML += `
+        <div class="_chat-row _chat-row-ai" id="loader">
+            <div class="_chat-bubble _chat-bubble-ai _loader">⏳ Thinking...</div>
+        </div>
+    `;
+    scrollBottom();
+}
+
+function removeLoader() {
+    document.getElementById("loader")?.remove();
+}
+
+function renderOptions(options) {
+    if (!options) return "";
+    return `
+        <div class="_chat-options">
+            ${options.map(o =>
+                `<button class="_chat-option-btn" data-value="${o}">${o}</button>`
+            ).join("")}
+        </div>
+    `;
+}
+
+function sendMessage(payload, displayText = null) {
+    if (isSending) return;
+    isSending = true;
+
+    clearOptions();
+
+    if (displayText) {
+        chatBox.innerHTML += `
+            <div class="_chat-row _chat-row-user">
+                <div class="_chat-bubble _chat-bubble-user">${displayText}</div>
+            </div>
+        `;
+    }
+
+    showLoader();
+
+    fetch("{% url 'chat_api_reply' chat.id %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+        removeLoader();
+
+        chatBox.innerHTML += `
+            <div class="_chat-row _chat-row-ai">
+                <div class="_chat-bubble _chat-bubble-ai">
+                    ${data.reply}
+                    ${renderOptions(data.options)}
+                </div>
+            </div>
+        `;
+
+        scrollBottom();
+
+        document.querySelectorAll("._chat-option-btn").forEach(btn => {
+            btn.onclick = () => {
+                sendMessage({ message: btn.dataset.value }, btn.dataset.value);
+            };
+        });
+    })
+    .finally(() => isSending = false);
+}
+
+function sendAction(action) {
+    sendMessage({ action });
+}
+
+plusBtn.addEventListener("click", () => {
+    sendMessage({ action: "plus_image" }, "🖼 Generate Image");
+    input.focus();
+});
+
+form.addEventListener("submit", e => {
+    e.preventDefault();
+    if (isSending) return;
+
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = "";
+    sendMessage({ message: text }, text);
+});
+
+scrollBottom();
+</script>
+
+{% endblock %}

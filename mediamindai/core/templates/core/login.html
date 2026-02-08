@@ -1,0 +1,130 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<style>
+    /* ===============================
+       LOGIN PAGE (SCOPED)
+    =============================== */
+
+    ._login-wrapper {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    ._login-card {
+        width: 100%;
+        max-width: 420px;
+        padding: 32px;
+        border-radius: 16px;
+
+        /* Glass effect */
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        color: #fff;
+    }
+
+    ._login-title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+
+    ._login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    ._login-input {
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        font-size: 15px;
+
+        background: rgba(0, 0, 0, 0.35);
+        color: #fff;
+    }
+
+    ._login-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    ._login-button {
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+
+        background: linear-gradient(135deg, #5b8cff, #7a5cff);
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    ._login-button:hover {
+        opacity: 0.9;
+    }
+
+    ._login-footer {
+        margin-top: 18px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    ._login-link {
+        color: #9ecbff;
+        text-decoration: none;
+    }
+
+    ._login-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="_login-wrapper">
+    <div class="_login-card">
+
+        <h2 class="_login-title">Login</h2>
+
+        <form method="post" class="_login-form">
+            {% csrf_token %}
+
+            <input
+                class="_login-input"
+                name="username"
+                placeholder="Username"
+                required
+            >
+
+            <input
+                class="_login-input"
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+            >
+
+            <button class="_login-button" type="submit">
+                Login
+            </button>
+        </form>
+
+        <div class="_login-footer">
+            Don’t have an account?
+            <a class="_login-link" href="{% url 'register' %}">Register</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

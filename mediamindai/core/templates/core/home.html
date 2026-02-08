@@ -1,0 +1,203 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<style>
+/* ===============================
+   HOME PAGE (SCOPED)
+=============================== */
+
+._home-wrapper {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 40px;
+}
+
+/* ===============================
+   GLASS CARD
+=============================== */
+
+._home-card {
+    width: 100%;
+    max-width: 900px;
+    padding: 30px 32px;
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    color: #ffffff;
+}
+
+/* ===============================
+   HEADING
+=============================== */
+
+._home-heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===============================
+   CHAT LIST
+=============================== */
+
+._home-chat-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* ===============================
+   CHAT ITEM
+=============================== */
+
+._home-chat-item {
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+._home-chat-item:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+/* ===============================
+   CHAT TITLE
+=============================== */
+
+._home-chat-link {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* ===============================
+   ACTIONS
+=============================== */
+
+._home-chat-actions {
+    display: flex;
+    gap: 14px;
+}
+
+._home-action {
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+._home-action:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Rename */
+._home-action-rename {
+    color: #9dd6ff;
+}
+
+/* Delete */
+._home-action-delete {
+    color: #ff6b6b;
+}
+
+/* ===============================
+   NEW CHAT BUTTON
+=============================== */
+
+._home-new-chat-btn {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 12px 22px;
+    border-radius: 24px;
+
+    background: linear-gradient(135deg, #9d61cf, #5f2c82);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+._home-new-chat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(157, 97, 207, 0.6);
+}
+
+/* ===============================
+   EMPTY STATE
+=============================== */
+
+._home-empty-text {
+    opacity: 0.7;
+    font-size: 15px;
+    margin-top: 8px;
+}
+</style>
+
+<div class="_home-wrapper">
+    <div class="_home-card">
+
+        <div class="_home-heading">
+            💬 Your Chats History
+        </div>
+
+        <ul class="_home-chat-list">
+            {% for chat in chats %}
+                <li class="_home-chat-item">
+
+                    <a class="_home-chat-link"
+                       href="{% url 'chat_detail' chat.id %}">
+                        {{ chat.title }}
+                    </a>
+
+                    <div class="_home-chat-actions">
+                        <a class="_home-action _home-action-rename"
+                           href="{% url 'rename_chat' chat.id %}">
+                            ✏️
+                        </a>
+
+                        <a class="_home-action _home-action-delete"
+                           href="{% url 'delete_chat' chat.id %}">
+                            🗑️
+                        </a>
+                    </div>
+
+                </li>
+            {% empty %}
+                <p class="_home-empty-text">
+                    No chats yet. Start a new one 🚀
+                </p>
+            {% endfor %}
+        </ul>
+
+        <a class="_home-new-chat-btn" href="{% url 'new_chat' %}">
+            + New Chat
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}
